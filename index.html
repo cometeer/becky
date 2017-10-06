@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="mdc-typography">
+
+<head>
+  <title>Material Components for the web</title>
+  <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<section id="dynamic-demo-toolbar">
+  <nav id="dynamic-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent" role="tablist">
+    <a role="tab" aria-controls="panel-1" class="mdc-tab mdc-tab--active" href="#panel-1">Home</a>
+    <a role="tab" aria-controls="panel-2" class="mdc-tab" href="#panel-2">Project</a>
+    <a role="tab" aria-controls="panel-3" class="mdc-tab" href="#panel-3">Contact</a>
+    <span class="mdc-tab-bar__indicator"></span>
+  </nav>
+</section>
+<section>
+  <div class="panels">
+    <p class="panel active home layer" id="panel-1" role="tabpanel" aria-hidden="false">
+
+    </p>
+    <p class="panel project layer" id="panel-2" role="tabpanel" aria-hidden="true">
+      panel2
+      <div class="mdc-layout-grid">
+        <div class="mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell">
+            <div class="mdc-card project-image-1 my-card-container">
+              <section class="mdc-card__primary textlayer">
+
+                <h1 class="mdc-card__title mdc-card__title--large">
+                  <!-- #################### Project card 1 title ############################### -->
+                  SENSE Toolbox
+                  <!-- #################### Project card 1 title ############################### -->
+                </h1>
+
+              </section>
+            </div>
+          </div>
+          <div class="mdc-layout-grid__cell">
+            <div class="mdc-card project-image-2 my-card-container">
+              <section class="mdc-card__primary textlayer">
+
+                <h1 class="mdc-card__title mdc-card__title--large">
+                  <!-- #################### Project card 1 title ############################### -->
+                  SENSE Schets
+                  <!-- #################### Project card 1 title ############################### -->
+                </h1>
+
+              </section>
+            </div>
+          </div>
+          <div class="mdc-layout-grid__cell"></div>
+        </div>
+      </div>
+    </p>
+    <p class="panel" id="panel-3" role="tabpanel" aria-hidden="true">
+      Telefoon: 0612341234
+    </p>
+  </div>
+  <div class="dots">
+    <a class="dot active" data-trigger="panel-1" href="#panel-1"></a>
+    <a class="dot" data-trigger="panel-2" href="#panel-2"></a>
+    <a class="dot" data-trigger="panel-3" href="#panel-3"></a>
+  </div>
+</section>
+
+  <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+  <script>mdc.autoInit()</script>
+  <!-- <script>mdc.tabs.MDCTabBar.attachTo(document.querySelector('#dynamic-demo-toolbar'));</script> -->
+
+<script>
+  var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
+          var dots = document.querySelector('.dots');
+          var panels = document.querySelector('.panels');
+
+          dynamicTabBar.preventDefaultOnClick = true;
+
+          function updateDot(index) {
+            var activeDot = dots.querySelector('.dot.active');
+            if (activeDot) {
+              activeDot.classList.remove('active');
+            }
+            var newActiveDot = dots.querySelector('.dot:nth-child(' + (index + 1) + ')');
+            if (newActiveDot) {
+              newActiveDot.classList.add('active');
+            }
+          }
+
+          function updatePanel(index) {
+            var activePanel = panels.querySelector('.panel.active');
+            if (activePanel) {
+              activePanel.classList.remove('active');
+            }
+            var newActivePanel = panels.querySelector('.panel:nth-child(' + (index + 1) + ')');
+            if (newActivePanel) {
+              newActivePanel.classList.add('active');
+            }
+          }
+
+          dynamicTabBar.listen('MDCTabBar:change', function ({ detail: tabs }) {
+            var nthChildIndex = tabs.activeTabIndex;
+
+            updatePanel(nthChildIndex);
+            updateDot(nthChildIndex);
+          });
+
+          dots.addEventListener('click', function (evt) {
+            if (!evt.target.classList.contains('dot')) {
+              return;
+            }
+
+            evt.preventDefault();
+
+            var dotIndex = [].slice.call(dots.querySelectorAll('.dot')).indexOf(evt.target);
+
+            if (dotIndex >= 0) {
+              dynamicTabBar.activeTabIndex = dotIndex;
+            }
+
+            updatePanel(dotIndex);
+            updateDot(dotIndex);
+          })
+</script>
+
+
+
+</body>
+
+
+
+</html>
